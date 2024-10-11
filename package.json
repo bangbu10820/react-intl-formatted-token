@@ -1,5 +1,5 @@
 {
-	"name": "@cyberk/utils",
+	"name": "@bangbu/ts-utils",
 	"description": "Utility functions and constants for Cyberk",
 	"version": "0.0.1",
 	"main": "./dist/index.mjs",
