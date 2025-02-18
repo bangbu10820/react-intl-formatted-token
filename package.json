@@ -1,9 +1,10 @@
 {
 	"name": "@bangbu/ts-utils",
 	"description": "Utility functions and constants for Cyberk",
-	"version": "0.0.2",
-	"main": "./dist/index.mjs",
-	"module": "./dist/index.mjs",
+	"version": "0.0.3",
+	"type": "module",
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"repository": {
 		"url": "https://github.com/bangbu10820/ts-utils"
