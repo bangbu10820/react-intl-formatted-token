@@ -4,11 +4,9 @@
 		"strict": true,
 		"lib": ["es2020"],
 		"target": "es2020",
-		"outDir": "./dist/cjs",
-		"declarationDir": "dist/types",
 		"esModuleInterop": true,
 		"declaration": true,
-		"module": "CommonJS",
+		"module": "es2020",
 		"moduleResolution": "node",
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
@@ -18,7 +16,9 @@
 		"strictFunctionTypes": true,
 		"noImplicitThis": true,
 		"allowJs": true,
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"outDir": "./dist/esm",
+		"declarationDir": "dist/types"
 	},
 	"include": ["src"],
 	"exclude": [

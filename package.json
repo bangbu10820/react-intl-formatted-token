@@ -1,17 +1,26 @@
 {
 	"name": "@bangbu/ts-utils",
 	"description": "Utility functions and constants for Cyberk",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"type": "module",
-	"main": "./dist/index.js",
-	"module": "./dist/index.js",
-	"types": "./dist/index.d.ts",
+	"main": "dist/cjs/index.js",
+	"types": "dist/types/index.d.ts",
 	"repository": {
 		"url": "https://github.com/bangbu10820/ts-utils"
 	},
-	"scripts": {
-		"build": "tsup"
+	"exports": {
+		"import": "./dist/esm/index.js",
+		"require": "./dist/cjs/index.js",
+		"default": "./dist/esm/index.js",
+		"types": "./dist/types/index.d.ts"
 	},
+	"scripts": {
+		"build": "rimraf dist && tsc --project tsconfig.esm.json && tsc --project tsconfig.cjs.json",
+		"dev": "tsc --project tsconfig.esm.json && tsc --project tsconfig.cjs.json --watch"
+	},
+	"files": [
+		"dist"
+	],
 	"keywords": [
 		"cyberk",
 		"utils"
@@ -20,7 +29,7 @@
 	"license": "MIT",
 	"devDependencies": {
 		"@types/ms": "^0.7.34",
-		"tsup": "^8.3.0",
+		"rimraf": "^6.0.1",
 		"typescript": "^5.6.3"
 	},
 	"publishConfig": {
