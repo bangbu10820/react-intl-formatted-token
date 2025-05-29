@@ -36,7 +36,7 @@ export const FormattedTokenAmount: FC<FormattedTokenAmountProps> = ({
 					roundingMode="trunc"
 					minimumFractionDigits={1}
 				/>
-				<Component style={{ ...subStyle, fontSize: 8 }}>
+				<Component style={{ fontSize: 8, ...subStyle }}>
 					{formattedZeros}
 				</Component>
 				<Component>{formattedSignificant}</Component>
