@@ -34,6 +34,7 @@ yarn add react react-intl
 | `value`    | `number`              |         | **Required.** The numerical value of the token amount.                                                       |
 | `subStyle` | `React.CSSProperties` |         | Optional. Custom CSS styles to apply to the subscript part when displaying very small numbers (e.g., `fontSize`). |
 | `as`       | `React.ElementType`   | `"span"`  | Optional. The HTML element type to use as the wrapper for the formatted amount.                              |
+| `notation` | `"standard" \| "scientific" \| "engineering" \| "compact"` | `"standard"` | Optional. The notation style to use for formatting the number (from `react-intl`). Defaults to `standard`. |
 
 ## Usage
 
@@ -61,6 +62,10 @@ const MyComponent = () => {
             as="div" 
             subStyle={{ color: 'blue' }} 
           />
+        </p>
+        <p>
+          Compact notation for a large number: 
+          <FormattedTokenAmount value={123456789} notation="compact" />
         </p>
       </div>
     </IntlProvider>
