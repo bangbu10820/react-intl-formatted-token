@@ -1,3 +1,4 @@
+import { NumberFormatOptions } from "@formatjs/ecma402-abstract";
 import Decimal from "decimal.js";
 import React, { FC } from "react";
 import { FormattedNumber } from "react-intl";
@@ -6,12 +7,14 @@ interface FormattedTokenAmountProps {
 	value: number;
 	subStyle?: React.CSSProperties;
 	as?: React.ElementType;
+	notation?: NumberFormatOptions["notation"];
 }
 
 export const FormattedTokenAmount: FC<FormattedTokenAmountProps> = ({
 	value: rawValue,
 	subStyle,
 	as = "span",
+	notation,
 }) => {
 	const Component = as;
 	const value = new Decimal(rawValue);
@@ -35,6 +38,7 @@ export const FormattedTokenAmount: FC<FormattedTokenAmountProps> = ({
 					style="decimal"
 					roundingMode="trunc"
 					minimumFractionDigits={1}
+					notation={notation}
 				/>
 				<Component style={{ fontSize: 8, ...subStyle }}>
 					{formattedZeros}
@@ -51,6 +55,7 @@ export const FormattedTokenAmount: FC<FormattedTokenAmountProps> = ({
 				style="decimal"
 				roundingMode="trunc"
 				maximumFractionDigits={6}
+				notation={notation}
 			/>
 		);
 	}
@@ -62,6 +67,7 @@ export const FormattedTokenAmount: FC<FormattedTokenAmountProps> = ({
 			style="decimal"
 			roundingMode="trunc"
 			maximumFractionDigits={4}
+			notation={notation}
 		/>
 	);
 };
