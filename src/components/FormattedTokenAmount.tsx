@@ -60,13 +60,25 @@ export const FormattedTokenAmount: FC<FormattedTokenAmountProps> = ({
 		);
 	}
 
+	if (value.lt(new Decimal("0.01"))) {
+		return (
+			<FormattedNumber
+				value={value.toNumber()}
+				style="decimal"
+				roundingMode="trunc"
+				maximumFractionDigits={4}
+				notation={notation}
+			/>
+		);
+	}
+
 	// If value > 0.001, show 4 decimal places
 	return (
 		<FormattedNumber
 			value={value.toNumber()}
 			style="decimal"
 			roundingMode="trunc"
-			maximumFractionDigits={4}
+			maximumFractionDigits={2}
 			notation={notation}
 		/>
 	);
