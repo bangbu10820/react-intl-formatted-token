@@ -19,7 +19,7 @@ export const FormattedTokenAmount: FC<FormattedTokenAmountProps> = ({
 	const Component = as;
 	const value = new Decimal(rawValue);
 
-	if (value.lt(new Decimal("0.000001"))) {
+	if (value.lt(new Decimal("0.00001"))) {
 		const toFixedString = value.toFixed();
 		const match = toFixedString.match(/^(0\.)([0]*)([1-9]\d*)$/);
 
