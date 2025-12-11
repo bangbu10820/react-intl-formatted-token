@@ -1,6 +1,6 @@
 import { NumberFormatOptions } from "@formatjs/ecma402-abstract";
 import Decimal from "decimal.js";
-import React, { FC } from "react";
+import React, { FC, useMemo } from "react";
 import { FormattedNumber } from "react-intl";
 
 interface FormattedTokenAmountProps {
@@ -15,8 +15,16 @@ export const FormattedTokenAmount: FC<FormattedTokenAmountProps> = ({
 	notation,
 }) => {
 	const Component = as;
-	const value = new Decimal(rawValue);
+	const value = useMemo(() => new Decimal(rawValue), [rawValue]);
 
+	const maximumFractionDigits = useMemo(() => {
+		if (value.lt(new Decimal("0.0001"))) return 8;
+		if (value.lt(new Decimal("0.001"))) return 6;
+		if (value.lt(new Decimal("0.01"))) return 4;
+		return 3;
+	}, [value]);
+
+	// Special formatting for very small values (< 0.00001)
 	if (value.lt(new Decimal("0.00001"))) {
 		const toFixedString = value.toFixed();
 		const match = toFixedString.match(/^(0\.)([0]*)([1-9]\d*)$/);
@@ -44,49 +52,12 @@ export const FormattedTokenAmount: FC<FormattedTokenAmountProps> = ({
 		);
 	}
 
-	if (value.lt(new Decimal("0.0001"))) {
-		return (
-			<FormattedNumber
-				value={value.toNumber()}
-				style="decimal"
-				roundingMode="trunc"
-				maximumFractionDigits={8}
-				notation={notation}
-			/>
-		);
-	}
-
-	if (value.lt(new Decimal("0.001"))) {
-		return (
-			<FormattedNumber
-				value={value.toNumber()}
-				style="decimal"
-				roundingMode="trunc"
-				maximumFractionDigits={6}
-				notation={notation}
-			/>
-		);
-	}
-
-	if (value.lt(new Decimal("0.01"))) {
-		return (
-			<FormattedNumber
-				value={value.toNumber()}
-				style="decimal"
-				roundingMode="trunc"
-				maximumFractionDigits={4}
-				notation={notation}
-			/>
-		);
-	}
-
-	// If value > 0.01, show 3 decimal places
 	return (
 		<FormattedNumber
 			value={value.toNumber()}
 			style="decimal"
 			roundingMode="trunc"
-			maximumFractionDigits={3}
+			maximumFractionDigits={maximumFractionDigits}
 			notation={notation}
 		/>
 	);
