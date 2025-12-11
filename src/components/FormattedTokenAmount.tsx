@@ -5,14 +5,12 @@ import { FormattedNumber } from "react-intl";
 
 interface FormattedTokenAmountProps {
 	value: number;
-	subStyle?: React.CSSProperties;
 	as?: React.ElementType;
 	notation?: NumberFormatOptions["notation"];
 }
 
 export const FormattedTokenAmount: FC<FormattedTokenAmountProps> = ({
 	value: rawValue,
-	subStyle,
 	as = "span",
 	notation,
 }) => {
@@ -40,10 +38,8 @@ export const FormattedTokenAmount: FC<FormattedTokenAmountProps> = ({
 					minimumFractionDigits={1}
 					notation={notation}
 				/>
-				<Component style={{ fontSize: 8, ...subStyle }}>
-					{formattedZeros}
-				</Component>
-				<Component>{formattedSignificant}</Component>
+				<sub style={{ fontSize: "smaller" }}>{formattedZeros}</sub>
+				<span>{formattedSignificant}</span>
 			</Component>
 		);
 	}
