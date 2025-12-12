@@ -4,7 +4,7 @@ import { FormattedNumber, useIntl, FormatNumberOptions } from "react-intl";
 
 interface FormattedTokenAmountProps
 	extends Pick<FormatNumberOptions, "notation"> {
-	value: number | string;
+	value: number | string | bigint;
 	as?: React.ElementType;
 }
 
@@ -15,7 +15,13 @@ export const FormattedTokenAmount: FC<FormattedTokenAmountProps> = ({
 }) => {
 	const intl = useIntl();
 	const Component = as || intl.textComponent || "span";
-	const value = useMemo(() => new Decimal(rawValue), [rawValue]);
+	const value = useMemo(() => {
+		if (typeof rawValue === "bigint") {
+			return new Decimal(rawValue.toString());
+		} else {
+			return new Decimal(rawValue);
+		}
+	}, [rawValue]);
 
 	const maximumFractionDigits = useMemo(() => {
 		if (value.lt(new Decimal("0.0001"))) return 8;
