@@ -1,20 +1,20 @@
-import { NumberFormatOptions } from "@formatjs/ecma402-abstract";
 import Decimal from "decimal.js";
 import React, { FC, useMemo } from "react";
-import { FormattedNumber } from "react-intl";
+import { FormattedNumber, useIntl, FormatNumberOptions } from "react-intl";
 
-interface FormattedTokenAmountProps {
-	value: number;
+interface FormattedTokenAmountProps
+	extends Pick<FormatNumberOptions, "notation"> {
+	value: number | string;
 	as?: React.ElementType;
-	notation?: NumberFormatOptions["notation"];
 }
 
 export const FormattedTokenAmount: FC<FormattedTokenAmountProps> = ({
 	value: rawValue,
-	as = "span",
+	as,
 	notation,
 }) => {
-	const Component = as;
+	const intl = useIntl();
+	const Component = as || intl.textComponent || "span";
 	const value = useMemo(() => new Decimal(rawValue), [rawValue]);
 
 	const maximumFractionDigits = useMemo(() => {
