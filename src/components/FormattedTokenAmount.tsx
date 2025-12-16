@@ -1,20 +1,30 @@
 import Decimal from "decimal.js";
 import React, { FC, useMemo } from "react";
 import { FormattedNumber, useIntl, FormatNumberOptions } from "react-intl";
+import { CurrencyWrapper } from "../core/CurrencyWrapper";
 
 interface FormattedTokenAmountProps
-	extends Pick<FormatNumberOptions, "notation"> {
+	extends Pick<
+		FormatNumberOptions,
+		"notation" | "style" | "currency" | "currencyDisplay"
+	> {
 	value: number | string | bigint;
 	as?: React.ElementType;
+	style?: "currency" | "decimal";
 }
 
 export const FormattedTokenAmount: FC<FormattedTokenAmountProps> = ({
 	value: rawValue,
 	as,
 	notation,
+	currency,
+	currencyDisplay,
+	style = "decimal",
 }) => {
 	const intl = useIntl();
-	const Component = as || intl.textComponent || "span";
+	const Text = as || intl.textComponent || React.Fragment;
+	const Wrapper = style === "currency" ? CurrencyWrapper : React.Fragment;
+
 	const value = useMemo(() => {
 		if (typeof rawValue === "bigint") {
 			return new Decimal(rawValue.toString());
@@ -36,7 +46,7 @@ export const FormattedTokenAmount: FC<FormattedTokenAmountProps> = ({
 		const match = toFixedString.match(/^(0\.)([0]*)([1-9]\d*)$/);
 
 		if (!match) {
-			return <Component>{rawValue}</Component>;
+			return <Text>{rawValue}</Text>;
 		}
 
 		const [_, decimalPoint, zeros, significantDigits] = match;
@@ -44,27 +54,31 @@ export const FormattedTokenAmount: FC<FormattedTokenAmountProps> = ({
 		const formattedSignificant = significantDigits?.slice(0, 4);
 
 		return (
-			<Component>
-				<FormattedNumber
-					value={0}
-					style="decimal"
-					roundingMode="trunc"
-					minimumFractionDigits={1}
-					notation={notation}
-				/>
-				<sub style={{ fontSize: "smaller" }}>{formattedZeros}</sub>
-				<span>{formattedSignificant}</span>
-			</Component>
+			<Text>
+				<Wrapper currency={currency} currencyDisplay={currencyDisplay}>
+					<FormattedNumber
+						value={0}
+						style="decimal"
+						roundingMode="trunc"
+						minimumFractionDigits={1}
+						maximumFractionDigits={1}
+					/>
+					<sub style={{ fontSize: "smaller" }}>{formattedZeros}</sub>
+					<>{formattedSignificant}</>
+				</Wrapper>
+			</Text>
 		);
 	}
 
 	return (
 		<FormattedNumber
 			value={value.toNumber()}
-			style="decimal"
+			style={style}
 			roundingMode="trunc"
 			maximumFractionDigits={maximumFractionDigits}
 			notation={notation}
 		/>
 	);
 };
+
+FormattedTokenAmount.displayName = "FormattedTokenAmount";
