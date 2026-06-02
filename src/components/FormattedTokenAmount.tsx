@@ -77,6 +77,8 @@ export const FormattedTokenAmount: FC<FormattedTokenAmountProps> = ({
 			roundingMode="trunc"
 			maximumFractionDigits={maximumFractionDigits}
 			notation={notation}
+			currency={currency}
+			currencyDisplay={currencyDisplay}
 		/>
 	);
 };
