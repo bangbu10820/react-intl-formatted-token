@@ -23,7 +23,15 @@ export const FormattedTokenAmount: FC<FormattedTokenAmountProps> = ({
 }) => {
 	const intl = useIntl();
 	const Text = as || intl.textComponent || React.Fragment;
-	const Wrapper = style === "currency" ? CurrencyWrapper : React.Fragment;
+
+	const withCurrency = (children: React.ReactNode) =>
+		style === "currency" ? (
+			<CurrencyWrapper currency={currency} currencyDisplay={currencyDisplay}>
+				{children}
+			</CurrencyWrapper>
+		) : (
+			children
+		);
 
 	const value = useMemo(() => {
 		if (typeof rawValue === "bigint") {
@@ -55,17 +63,19 @@ export const FormattedTokenAmount: FC<FormattedTokenAmountProps> = ({
 
 		return (
 			<Text>
-				<Wrapper currency={currency} currencyDisplay={currencyDisplay}>
-					<FormattedNumber
-						value={0}
-						style="decimal"
-						roundingMode="trunc"
-						minimumFractionDigits={1}
-						maximumFractionDigits={1}
-					/>
-					<sub style={{ fontSize: "smaller" }}>{formattedZeros}</sub>
-					<>{formattedSignificant}</>
-				</Wrapper>
+				{withCurrency(
+					<>
+						<FormattedNumber
+							value={0}
+							style="decimal"
+							roundingMode="trunc"
+							minimumFractionDigits={1}
+							maximumFractionDigits={1}
+						/>
+						<sub style={{ fontSize: "smaller" }}>{formattedZeros}</sub>
+						<>{formattedSignificant}</>
+					</>,
+				)}
 			</Text>
 		);
 	}
